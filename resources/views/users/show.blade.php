@@ -88,7 +88,7 @@ Detail User - {{ config('app.name') }}
             </div>
         </div>
     </div>
-@endsection
+@endsection 
 
 @section('content')
     <div class="container">
