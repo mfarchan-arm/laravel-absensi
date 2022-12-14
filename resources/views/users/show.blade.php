@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Detail User - {{ config('app.name') }}
+    Detail User - {{ config('app.name') }}
 @endsection
 
 
@@ -37,7 +37,7 @@ Detail User - {{ config('app.name') }}
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape bg-gradient-yellow text-white rounded-circle shadow">
-                            <i class="fas fa-business-time"></i>
+                                <i class="fas fa-business-time"></i>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@ Detail User - {{ config('app.name') }}
             </div>
         </div>
     </div>
-@endsection 
+@endsection
 
 @section('content')
     <div class="container">
@@ -104,22 +104,37 @@ Detail User - {{ config('app.name') }}
                         <div class="table-responsive">
                             <table class="table table-sm">
                                 <tbody>
-                                    <tr><td>NRP</td><td>: {{ $user->nrp }}</td></tr>
-                                    <tr><td>Nama</td><td>: {{ $user->nama }}</td></tr>
-                                    <tr><td>Sebagai</td><td>: {{ $user->role->role }}</td></tr>
+                                    <tr>
+                                        <td>NRP</td>
+                                        <td>: {{ $user->nrp }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nama</td>
+                                        <td>: {{ $user->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sebagai</td>
+                                        <td>: {{ $user->role->role }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <div class="float-right">
-                                <a href="{{ route('users.edit',$user) }}" class="btn btn-sm btn-success" title="Ubah"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-success" title="Ubah"><i
+                                        class="fas fa-edit"></i></a>
                                 @if ($user->id != auth()->user()->id)
-                                    <form class="d-inline-block" action="{{ route('users.destroy',$user) }}" method="post">
+                                    <form class="d-inline-block" action="{{ route('users.destroy', $user) }}"
+                                        method="post">
                                         @csrf @method('delete')
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Apakah anda yakin ingin menghapus user ini ???')"><i class="fas fa-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus"
+                                            onclick="return confirm('Apakah anda yakin ingin menghapus user ini ???')"><i
+                                                class="fas fa-trash"></i></button>
                                     </form>
                                 @endif
-                                <form class="d-inline-block" action="{{ route('users.password',$user) }}" method="post">
+                                <form class="d-inline-block" action="{{ route('users.password', $user) }}" method="post">
                                     @csrf @method('patch')
-                                    <button type="submit" class="btn btn-sm btn-dark" onclick="return confirm('Apakah anda yakin ingin mereset password user ini ???')">Reset Password</button>
+                                    <button type="submit" class="btn btn-sm btn-dark"
+                                        onclick="return confirm('Apakah anda yakin ingin mereset password user ini ???')">Reset
+                                        Password</button>
                                 </form>
                             </div>
                         </div>
@@ -132,13 +147,15 @@ Detail User - {{ config('app.name') }}
                         <h5 class="m-0 pt-1 font-weight-bold float-left">Kehadiran</h5>
                         @if ($libur == false)
                             @if (date('l') != 'Saturday' && date('l') != 'Sunday')
-                                <button title="Tambah Kehadiran" type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#kehadiran">
+                                <button title="Tambah Kehadiran" type="button" class="btn btn-sm btn-primary float-right"
+                                    data-toggle="modal" data-target="#kehadiran">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             @endif
                         @endif
-                        <form class="float-right d-inline-block" action="{{ route('kehadiran.excel-user',$user) }}" method="get">
-                            <input type="hidden" name="bulan" value="{{ request('bulan',date('Y-m')) }}">
+                        <form class="float-right d-inline-block" action="{{ route('kehadiran.excel-user', $user) }}"
+                            method="get">
+                            <input type="hidden" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
                             <button title="Download" type="submit" class="btn btn-sm btn-success">
                                 <i class="fas fa-download"></i>
                             </button>
@@ -149,7 +166,8 @@ Detail User - {{ config('app.name') }}
                             <div class="form-group row mb-3 ">
                                 <label for="bulan" class="col-form-label col-sm-2">Bulan</label>
                                 <div class="input-group col-sm-10">
-                                    <input type="month" class="form-control" name="bulan" id="bulan" value="{{ request('bulan',date('Y-m')) }}">
+                                    <input type="month" class="form-control" name="bulan" id="bulan"
+                                        value="{{ request('bulan', date('Y-m')) }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-primary" type="submit">Cari</button>
                                     </div>
@@ -183,16 +201,16 @@ Detail User - {{ config('app.name') }}
                                                 @else
                                                     <td>-</td>
                                                 @endif
-                                                @if($present->jam_keluar)
+                                                @if ($present->jam_keluar)
                                                     <td>{{ date('H:i:s', strtotime($present->jam_keluar)) }}</td>
                                                     <td>
                                                         @if (strtotime($present->jam_keluar) <= strtotime($present->jam_masuk))
-                                                            {{ 21 - (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) }}
+                                                            {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                         @else
-                                                            @if (strtotime($present->jam_keluar) >= strtotime(config('absensi.jam_pulang') . ' +2 hours'))
-                                                                {{ (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) - 3 }}
+                                                            @if (strtotime($present->jam_keluar) >= strtotime(config('absensi.jam_pulang')))
+                                                                {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                             @else
-                                                                {{ (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) - 1 }}
+                                                                {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                             @endif
                                                         @endif
                                                     </td>
@@ -201,7 +219,9 @@ Detail User - {{ config('app.name') }}
                                                     <td>-</td>
                                                 @endif
                                                 <td>
-                                                    <button id="btnUbahKehadiran" data-id="{{ $present->id }}" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#ubahKehadiran">
+                                                    <button id="btnUbahKehadiran" data-id="{{ $present->id }}"
+                                                        type="button" class="btn btn-sm btn-success" data-toggle="modal"
+                                                        data-target="#ubahKehadiran">
                                                         <i class="far fa-edit"></i>
                                                     </button>
                                                 </td>
@@ -221,13 +241,14 @@ Detail User - {{ config('app.name') }}
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="kehadiran" tabindex="-1" role="dialog" aria-labelledby="kehadiranLabel" aria-hidden="true">
+    <div class="modal fade" id="kehadiran" tabindex="-1" role="dialog" aria-labelledby="kehadiranLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="kehadiranLabel">Tambah Kehadiran</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form action="{{ route('kehadiran.store') }}" method="post">
@@ -238,21 +259,32 @@ Detail User - {{ config('app.name') }}
                         <div class="form-group row">
                             <label for="keterangan" class="col-form-label col-sm-3">Keterangan</label>
                             <div class="col-sm-9">
-                                <select class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" id="keterangan">
-                                    <option value="Alpha" {{ old('keterangan') == 'Alpha' ? 'selected':'' }}>Alpha</option>
-                                    <option value="Masuk" {{ old('keterangan') == 'Masuk' ? 'selected':'' }}>Masuk</option>
-                                    <option value="Telat" {{ old('keterangan') == 'Telat' ? 'selected':'' }}>Telat</option>
-                                    <option value="Sakit" {{ old('keterangan') == 'Sakit' ? 'selected':'' }}>Sakit</option>
-                                    <option value="Cuti" {{ old('keterangan') == 'Cuti' ? 'selected':'' }}>Cuti</option>
+                                <select class="form-control @error('keterangan') is-invalid @enderror" name="keterangan"
+                                    id="keterangan">
+                                    <option value="Alpha" {{ old('keterangan') == 'Alpha' ? 'selected' : '' }}>Alpha
+                                    </option>
+                                    <option value="Masuk" {{ old('keterangan') == 'Masuk' ? 'selected' : '' }}>Masuk
+                                    </option>
+                                    <option value="Telat" {{ old('keterangan') == 'Telat' ? 'selected' : '' }}>Telat
+                                    </option>
+                                    <option value="Sakit" {{ old('keterangan') == 'Sakit' ? 'selected' : '' }}>Sakit
+                                    </option>
+                                    <option value="Cuti" {{ old('keterangan') == 'Cuti' ? 'selected' : '' }}>Cuti
+                                    </option>
                                 </select>
-                                @error('keterangan') <span class="invalid-feedback" role="alert">{{ $message }}</span> @enderror
+                                @error('keterangan')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row" id="jamMasuk">
                             <label for="jam_masuk" class="col-form-label col-sm-3">Jam Masuk</label>
                             <div class="col-sm-9">
-                                <input type="time" name="jam_masuk" id="jam_masuk" class="form-control @error('jam_masuk') is-invalid @enderror">
-                                @error('jam_masuk') <span class="invalid-feedback" role="alert">{{ $message }}</span> @enderror
+                                <input type="time" name="jam_masuk" id="jam_masuk"
+                                    class="form-control @error('jam_masuk') is-invalid @enderror">
+                                @error('jam_masuk')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -266,13 +298,14 @@ Detail User - {{ config('app.name') }}
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="ubahKehadiran" tabindex="-1" role="dialog" aria-labelledby="ubahKehadiranLabel" aria-hidden="true">
+    <div class="modal fade" id="ubahKehadiran" tabindex="-1" role="dialog" aria-labelledby="ubahKehadiranLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ubahKehadiranLabel">Ubah Kehadiran</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form id="formUbahKehadiran" action="" method="post">
@@ -283,28 +316,42 @@ Detail User - {{ config('app.name') }}
                         <div class="form-group row">
                             <label for="ubah_keterangan" class="col-form-label col-sm-3">Keterangan</label>
                             <div class="col-sm-9">
-                                <select class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" id="ubah_keterangan">
-                                    <option value="Alpha" {{ old('keterangan') == 'Alpha' ? 'selected':'' }}>Alpha</option>
-                                    <option value="Masuk" {{ old('keterangan') == 'Masuk' ? 'selected':'' }}>Masuk</option>
-                                    <option value="Telat" {{ old('keterangan') == 'Telat' ? 'selected':'' }}>Telat</option>
-                                    <option value="Sakit" {{ old('keterangan') == 'Sakit' ? 'selected':'' }}>Sakit</option>
-                                    <option value="Cuti" {{ old('keterangan') == 'Cuti' ? 'selected':'' }}>Cuti</option>
+                                <select class="form-control @error('keterangan') is-invalid @enderror" name="keterangan"
+                                    id="ubah_keterangan">
+                                    <option value="Alpha" {{ old('keterangan') == 'Alpha' ? 'selected' : '' }}>Alpha
+                                    </option>
+                                    <option value="Masuk" {{ old('keterangan') == 'Masuk' ? 'selected' : '' }}>Masuk
+                                    </option>
+                                    <option value="Telat" {{ old('keterangan') == 'Telat' ? 'selected' : '' }}>Telat
+                                    </option>
+                                    <option value="Sakit" {{ old('keterangan') == 'Sakit' ? 'selected' : '' }}>Sakit
+                                    </option>
+                                    <option value="Cuti" {{ old('keterangan') == 'Cuti' ? 'selected' : '' }}>Cuti
+                                    </option>
                                 </select>
-                                @error('keterangan') <span class="invalid-feedback" role="alert">{{ $message }}</span> @enderror
+                                @error('keterangan')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row" id="jamMasuk">
                             <label for="ubah_jam_masuk" class="col-form-label col-sm-3">Jam Masuk</label>
                             <div class="col-sm-9">
-                                <input type="time" name="jam_masuk" id="ubah_jam_masuk" class="form-control @error('jam_masuk') is-invalid @enderror">
-                                @error('jam_masuk') <span class="invalid-feedback" role="alert">{{ $message }}</span> @enderror
+                                <input type="time" name="jam_masuk" id="ubah_jam_masuk"
+                                    class="form-control @error('jam_masuk') is-invalid @enderror">
+                                @error('jam_masuk')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row" id="jamKeluar">
                             <label for="ubah_jam_keluar" class="col-form-label col-sm-3">Jam Keluar</label>
                             <div class="col-sm-9">
-                                <input type="time" name="jam_keluar" id="ubah_jam_keluar" class="form-control @error('jam_keluar') is-invalid @enderror">
-                                @error('jam_keluar') <span class="invalid-feedback" role="alert">{{ $message }}</span> @enderror
+                                <input type="time" name="jam_keluar" id="ubah_jam_keluar"
+                                    class="form-control @error('jam_keluar') is-invalid @enderror">
+                                @error('jam_keluar')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -320,16 +367,16 @@ Detail User - {{ config('app.name') }}
 
 @push('scripts')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#jamMasuk').hide();
-            $('#keterangan').on('change',function(){
+            $('#keterangan').on('change', function() {
                 if ($(this).val() == 'Masuk' || $(this).val() == 'Telat') {
                     $('#jamMasuk').show();
                 } else {
                     $('#jamMasuk').hide();
                 }
             });
-            $('#btnUbahKehadiran').on('click',function(){
+            $('#btnUbahKehadiran').on('click', function() {
                 const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 const id = $(this).data('id');
                 $('#formUbahKehadiran').attr('action', "{{ url('kehadiran') }}/" + id);
@@ -341,7 +388,7 @@ Detail User - {{ config('app.name') }}
                         _token: CSRF_TOKEN,
                         id: id
                     },
-                    success: function (data) {
+                    success: function(data) {
                         var date = new Date(data.tanggal);
                         var tahun = date.getFullYear();
                         var bulan = date.getMonth();
@@ -350,30 +397,68 @@ Detail User - {{ config('app.name') }}
                         var jam = date.getHours();
                         var menit = date.getMinutes();
                         var detik = date.getSeconds();
-                        switch(hari) {
-                            case 0: hari = "Minggu"; break;
-                            case 1: hari = "Senin"; break;
-                            case 2: hari = "Selasa"; break;
-                            case 3: hari = "Rabu"; break;
-                            case 4: hari = "Kamis"; break;
-                            case 5: hari = "Jum'at"; break;
-                            case 6: hari = "Sabtu"; break;
+                        switch (hari) {
+                            case 0:
+                                hari = "Minggu";
+                                break;
+                            case 1:
+                                hari = "Senin";
+                                break;
+                            case 2:
+                                hari = "Selasa";
+                                break;
+                            case 3:
+                                hari = "Rabu";
+                                break;
+                            case 4:
+                                hari = "Kamis";
+                                break;
+                            case 5:
+                                hari = "Jum'at";
+                                break;
+                            case 6:
+                                hari = "Sabtu";
+                                break;
                         }
-                        switch(bulan) {
-                            case 0: bulan = "Januari"; break;
-                            case 1: bulan = "Februari"; break;
-                            case 2: bulan = "Maret"; break;
-                            case 3: bulan = "April"; break;
-                            case 4: bulan = "Mei"; break;
-                            case 5: bulan = "Juni"; break;
-                            case 6: bulan = "Juli"; break;
-                            case 7: bulan = "Agustus"; break;
-                            case 8: bulan = "September"; break;
-                            case 9: bulan = "Oktober"; break;
-                            case 10: bulan = "November"; break;
-                            case 11: bulan = "Desember"; break;
+                        switch (bulan) {
+                            case 0:
+                                bulan = "Januari";
+                                break;
+                            case 1:
+                                bulan = "Februari";
+                                break;
+                            case 2:
+                                bulan = "Maret";
+                                break;
+                            case 3:
+                                bulan = "April";
+                                break;
+                            case 4:
+                                bulan = "Mei";
+                                break;
+                            case 5:
+                                bulan = "Juni";
+                                break;
+                            case 6:
+                                bulan = "Juli";
+                                break;
+                            case 7:
+                                bulan = "Agustus";
+                                break;
+                            case 8:
+                                bulan = "September";
+                                break;
+                            case 9:
+                                bulan = "Oktober";
+                                break;
+                            case 10:
+                                bulan = "November";
+                                break;
+                            case 11:
+                                bulan = "Desember";
+                                break;
                         }
-                        $('#tanggal').html(hari +", "+ tanggal +" "+ bulan +" "+ tahun);
+                        $('#tanggal').html(hari + ", " + tanggal + " " + bulan + " " + tahun);
                         $('#ubah_keterangan').val(data.keterangan);
                         $('#ubah_jam_masuk').val(data.jam_masuk);
                         $('#ubah_jam_keluar').val(data.jam_keluar);

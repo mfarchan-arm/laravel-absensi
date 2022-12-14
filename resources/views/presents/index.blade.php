@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Kehadiran - {{ config('app.name') }}
+    Kehadiran - {{ config('app.name') }}
 @endsection
 
 @section('header')
@@ -33,7 +33,7 @@ Kehadiran - {{ config('app.name') }}
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape bg-gradient-yellow text-white rounded-circle shadow">
-                            <i class="fas fa-business-time"></i>
+                                <i class="fas fa-business-time"></i>
                             </div>
                         </div>
                     </div>
@@ -79,14 +79,15 @@ Kehadiran - {{ config('app.name') }}
 
 @section('content')
 
-<!-- Begin Page Content -->
+    <!-- Begin Page Content -->
     <div class="container">
         <div class="card shadow h-100">
             <div class="card-header">
                 <h5 class="m-0 pt-1 font-weight-bold float-left">Kehadiran</h5>
                 <form class="float-right" action="{{ route('kehadiran.excel-users') }}" method="get">
                     <input type="hidden" name="tanggal" value="{{ request('tanggal', date('Y-m-d')) }}">
-                    <button class="btn btn-sm btn-primary" type="submit" title="Download"><i class="fas fa-download"></i></button>
+                    <button class="btn btn-sm btn-primary" type="submit" title="Download"><i
+                            class="fas fa-download"></i></button>
                 </form>
             </div>
             <div class="card-body">
@@ -96,7 +97,8 @@ Kehadiran - {{ config('app.name') }}
                             <div class="form-group row">
                                 <label for="tanggal" class="col-form-label col-sm-3">Tanggal</label>
                                 <div class="input-group col-sm-9">
-                                    <input type="date" class="form-control" name="tanggal" id="tanggal" value="{{ request('tanggal', date('Y-m-d')) }}">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal"
+                                        value="{{ request('tanggal', date('Y-m-d')) }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-primary" type="submit">Cari</button>
                                     </div>
@@ -132,24 +134,26 @@ Kehadiran - {{ config('app.name') }}
                                 @foreach ($presents as $present)
                                     <tr>
                                         <th>{{ $rank++ }}</th>
-                                        <td><a href="{{ route('users.show',$present->user) }}">{{ $present->user->nrp }}</a></td>
+                                        <td><a
+                                                href="{{ route('users.show', $present->user) }}">{{ $present->user->nrp }}</a>
+                                        </td>
                                         <td>{{ $present->user->nama }}</td>
                                         <td>{{ $present->keterangan }}</td>
                                         @if ($present->jam_masuk)
                                             <td>{{ date('H:i:s', strtotime($present->jam_masuk)) }}</td>
                                         @else
                                             <td>-</td>
-                                        @endif  
-                                        @if($present->jam_keluar)
+                                        @endif
+                                        @if ($present->jam_keluar)
                                             <td>{{ date('H:i:s', strtotime($present->jam_keluar)) }}</td>
                                             <td>
                                                 @if (strtotime($present->jam_keluar) <= strtotime($present->jam_masuk))
-                                                    {{ 21 - (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) }}
+                                                    {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                 @else
-                                                    @if (strtotime($present->jam_keluar) >= strtotime(config('absensi.jam_pulang') . ' +2 hours'))
-                                                        {{ (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) - 3 }}
+                                                    @if (strtotime($present->jam_keluar) >= strtotime(config('absensi.jam_pulang')))
+                                                        {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                     @else
-                                                        {{ (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) - 1 }}
+                                                        {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                     @endif
                                                 @endif
                                             </td>
@@ -166,6 +170,6 @@ Kehadiran - {{ config('app.name') }}
             </div>
         </div>
     </div>
-<!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 
 @endsection

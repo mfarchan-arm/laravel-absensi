@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Detail User - {{ config('app.name') }}
+    Detail User - {{ config('app.name') }}
 @endsection
 
 
@@ -34,7 +34,7 @@ Detail User - {{ config('app.name') }}
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape bg-gradient-yellow text-white rounded-circle shadow">
-                            <i class="fas fa-business-time"></i>
+                                <i class="fas fa-business-time"></i>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,8 @@ Detail User - {{ config('app.name') }}
                     <div class="form-group row mb-3 ">
                         <label for="bulan" class="col-form-label col-sm-2">Bulan</label>
                         <div class="input-group col-sm-10">
-                            <input type="month" class="form-control" name="bulan" id="bulan" value="{{ request('bulan',date('Y-m')) }}">
+                            <input type="month" class="form-control" name="bulan" id="bulan"
+                                value="{{ request('bulan', date('Y-m')) }}">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-primary" type="submit">Cari</button>
                             </div>
@@ -123,16 +124,16 @@ Detail User - {{ config('app.name') }}
                                         @else
                                             <td>-</td>
                                         @endif
-                                        @if($present->jam_keluar)
+                                        @if ($present->jam_keluar)
                                             <td>{{ date('H:i:s', strtotime($present->jam_keluar)) }}</td>
                                             <td>
                                                 @if (strtotime($present->jam_keluar) <= strtotime($present->jam_masuk))
-                                                    {{ 21 - (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) }}
+                                                    {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                 @else
-                                                    @if (strtotime($present->jam_keluar) >= strtotime(config('absensi.jam_pulang') . ' +2 hours'))
-                                                        {{ (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) - 3 }}
+                                                    @if (strtotime($present->jam_keluar) >= strtotime(config('absensi.jam_pulang')))
+                                                        {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                     @else
-                                                        {{ (\Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar))) - 1 }}
+                                                        {{ \Carbon\Carbon::parse($present->jam_masuk)->diffInHours(\Carbon\Carbon::parse($present->jam_keluar)) }}
                                                     @endif
                                                 @endif
                                             </td>

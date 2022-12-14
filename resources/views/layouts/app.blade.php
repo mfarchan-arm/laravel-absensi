@@ -45,7 +45,8 @@
             </button>
             <!-- Brand -->
             <a class="navbar-brand pt-0" href="{{ route('home') }}">
-                <h1>SIAB</h1>
+                <h1 >SD NEGERI 06 </h1>
+                <h1>KOTA BENGKULU</h1>
             </a>
             <!-- User -->
             <ul class="nav align-items-center d-md-none">
@@ -233,9 +234,7 @@
                 <div class="row align-items-center justify-content-xl-between">
                     <div class="col-xl-6">
                         <div class="copyright text-center text-xl-left text-muted">
-                            © {{ date('Y')}} Developed By <a href="https://maulanakevinp.github.io/" class="font-weight-bold ml-1"
-                                target="_lank">Kevin</a> Theme By <a href="https://www.creative-tim.com"
-                                class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+                            © {{ date('Y')}} 
                         </div>
                     </div>
                 </div>

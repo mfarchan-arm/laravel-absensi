@@ -44,15 +44,15 @@ Route::group(['middleware' => ['web', 'auth', 'roles']], function(){
         Route::patch('/kehadiran/{kehadiran}', 'PresentsController@update')->name('kehadiran.update');
         Route::post('/kehadiran', 'PresentsController@store')->name('kehadiran.store');
     });
-
+ 
     Route::group(['roles' => 'Pegawai'], function(){
         Route::get('/daftar-hadir', 'PresentsController@show')->name('daftar-hadir');
         Route::get('/daftar-hadir/cari', 'PresentsController@cariDaftarHadir')->name('daftar-hadir.cari');
     });
 
     // ATUR IP ADDRESS DISINI
-    Route::group(['middleware' => ['ipcheck:'.config('absensi.ip_address')]], function() {
+    // Route::group(['middleware' => ['ipcheck:'.config('absensi.ip_address')]], function() {
         Route::patch('/absen/{kehadiran}', 'PresentsController@checkOut')->name('kehadiran.check-out');
         Route::post('/absen', 'PresentsController@checkIn')->name('kehadiran.check-in');
-    });
+    // });
 });
