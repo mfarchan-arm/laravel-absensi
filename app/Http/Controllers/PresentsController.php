@@ -236,6 +236,6 @@ class PresentsController extends Controller
 
     public function excelUsers(Request $request)
     {
-        return Excel::download(new UsersPresentExport($request->tanggal), 'kehadiran-'.$request->tanggal.'.xlsx');
+        return Excel::download(new UsersPresentExport($request->bulan), 'kehadiran-'.$request->bulan.'.xlsx');
     }
 }

@@ -155,7 +155,7 @@
                         @endif
                         <form class="float-right d-inline-block" action="{{ route('kehadiran.excel-user', $user) }}"
                             method="get">
-                            <input type="hidden" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
+                            <input type="month" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
                             <button title="Download" type="submit" class="btn btn-sm btn-success">
                                 <i class="fas fa-download"></i>
                             </button>
